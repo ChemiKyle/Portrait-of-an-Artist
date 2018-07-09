@@ -5,7 +5,6 @@ import ImageFont
 #import imagedata
 import random
 #import pickle
-import json
 import textwrap
 import os
 import sys
@@ -14,16 +13,18 @@ EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
 def main():
-    os.chdir(os.path.dirname(sys.argv[0]))
-    author, title, quote = select_quote()
+    os.chdir((sys.path[0]))
+    author, title, quote = select_quote_from_dict()
 #    print(quote)
     draw(author, title, quote)
 
 def select_quote_from_dict(file = 'quotes.json', use_json=True):
     if use_json:
+        import json
         with open(file, 'r') as fp:
             dic = json.load(fp)
     else:
+        import pickle
         with open(file, 'rb') as fp:
             dic = pickle.load(fp)
     author, book_quotes = random.choice(list(dic.items()))
