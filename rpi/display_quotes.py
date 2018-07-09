@@ -8,17 +8,18 @@ import random
 import json
 import textwrap
 import os
+import sys
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
 def main():
-    os.chdir('/home/pi/epaper/mine')
+    os.chdir(os.path.dirname(sys.argv[0]))
     author, title, quote = select_quote()
 #    print(quote)
     draw(author, title, quote)
 
-def select_quote(file = '/home/pi/epaper/mine/quotes.json', use_json=True):
+def select_quote_from_dict(file = 'quotes.json', use_json=True):
     if use_json:
         with open(file, 'r') as fp:
             dic = json.load(fp)
