@@ -14,9 +14,36 @@ EPD_HEIGHT = 384
 
 def main():
     os.chdir((sys.path[0]))
-    author, title, quote = select_quote_from_dict()
+    use_dict = False
+    if use_dict:
+        author, book, quote = select_quote_from_dict()
+    else:
+        author, book, quote = select_quote_from_db()
 #    print(quote)
-    draw(author, title, quote)
+    draw(author, book, quote)
+
+
+def select_quote_from_db(db = '../data/quotes.db', uniformity = "quote"):
+    """
+    uniformity: equal probability of selection for any...
+        quote
+        book
+        author
+    """
+    import sqlite3
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    cmd = ("SELECT ? FROM quotes ORDER BY Random() LIMIT 1")
+    c.execute(cmd, [uniformity])
+    result = c.fetchone()[0]
+    cmd = ("SELECT author, book, quote FROM quotes WHERE ?=? ORDER BY Random() LIMIT 1")
+    c.execute(cmd, [uniformity, result])
+    # return c.fetchone() #  dpesn't work due to unicode error
+    res_list = []
+    for i in c.fetchone():
+        res_list.append(i.encode('utf-8'))
+    return res_list
+
 
 def select_quote_from_dict(file = '../data/quotes.json', use_json=True):
     if use_json:

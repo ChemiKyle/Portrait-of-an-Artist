@@ -46,7 +46,8 @@ def scrape_info(quotes, use_dict = False, use_json = False):
             try:
                 c.execute(cmd, [author, book, quote])
             except sqlite3.IntegrityError:
-                print("Skipping duplicate quote: {}".format(quote))
+                #print('Skpping duplicate: {}\n-{} "{}"')
+                pass
     if not use_dict:
         conn.commit()
         conn.close()
