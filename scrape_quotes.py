@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 
 def main():
     quotes = import_from_txt('all_kindle_notes.txt')

@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import epd7in5b
 import Image
 import ImageDraw
