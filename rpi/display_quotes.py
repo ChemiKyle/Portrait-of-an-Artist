@@ -18,7 +18,7 @@ def main():
 #    print(quote)
     draw(author, title, quote)
 
-def select_quote_from_dict(file = 'quotes.json', use_json=True):
+def select_quote_from_dict(file = '../data/quotes.json', use_json=True):
     if use_json:
         import json
         with open(file, 'r') as fp:
