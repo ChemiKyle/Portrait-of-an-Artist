@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from datetime import datetime as dt
+
 
 def main():
     quotes = import_from_txt('all_kindle_notes.txt')
@@ -15,10 +17,11 @@ def import_from_txt(quote_file):
 
 def split_quote(quote_block):
     splt = quote_block.split('\n')
-    book, author = splt[1].split('(') # breaks if parentheses in title
-    stamp_line = splt[2]
+    book, author = splt[1].replace(')','').split('(') # breaks if parentheses in title
+    stamp_line = splt[2].split('|')
+    timestamp = stamp_line[-1][10:]
     quote = splt[4]
-    return book, author, quote
+    return book, author, quote, timestamp
 
 
 def scrape_info(quotes, use_dict = False, use_json = False):
@@ -26,11 +29,11 @@ def scrape_info(quotes, use_dict = False, use_json = False):
     if not use_dict:
         import sqlite3
         conn = sqlite3.connect('data/quotes.db')
-        conn.execute('CREATE TABLE IF NOT EXISTS quotes(author, book, quote, '
+        conn.execute('CREATE TABLE IF NOT EXISTS quotes(author, book, quote, timestamp, '
         'CONSTRAINT quote_unique UNIQUE (quote))')
         c = conn.cursor()
     for quote_block in quotes[1:-1]:
-        book, author, quote = split_quote(quote_block)
+        book, author, quote, timestamp = split_quote(quote_block)
         if use_dict:
             if author not in dic:
                 dic[author] = {}
@@ -41,10 +44,10 @@ def scrape_info(quotes, use_dict = False, use_json = False):
                 q = {'quote ' + str(len(dic[author][book]) + 1): quote}
                 dic[author][book].update(q)
         else:
-            cmd =("INSERT INTO quotes(author,book,quote) "
-                    "VALUES(?,?,?)")
+            cmd =("INSERT INTO quotes(author,book,quote,timestamp) "
+                    "VALUES(?,?,?,?)")
             try:
-                c.execute(cmd, [author, book, quote])
+                c.execute(cmd, [author, book, quote, timestamp])
             except sqlite3.IntegrityError:
                 #print('Skpping duplicate: {}\n-{} "{}"')
                 pass
