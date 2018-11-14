@@ -71,10 +71,10 @@ gg_add_timelines <- function(p, datelist, col_list) {
   print(p)
 }
 
-datelist <- c('06/01/16', '07/15/17', '12/15/17', '05/07/18', # moving/jobs
+datelist <- c('06/01/16', '07/27/17', '12/15/17', '05/07/18', # moving/jobs
               '08/21/17', '04/21/18')
 
-gg_add_timelines(p, datelist, col_list = c('forestgreen', 'blue', 'orange', 'darkred',
+gg_add_timelines(, datelist, col_list = c('forestgreen', 'blue', 'orange', 'darkred',
                                            'darkmagenta', 'darkmagenta'))
 
 p <- ggplot(df, aes(x=timestamp, fill=cut(sentiment, 9)
