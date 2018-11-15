@@ -35,6 +35,8 @@ df %>%
   scale_x_yearmon( n = 12*3) +
   theme_solarized_2()
 
+# Playing around trying to understand how readingStartTime is determined
+# Seems to only mark the beginning of an indepent session until the screen is turned off
 df %>%
   ggplot() +
   geom_point(aes(x = readingStartTime, y = time_delta))
