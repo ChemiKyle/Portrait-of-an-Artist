@@ -14,7 +14,7 @@ cp /media/$USER/Kindle/documents/My\ Clippings.txt all_kindle_notes.txt
 ### Create a database
 Parse quotes and create a database with `scrape_quotes.py`
 
-From here you can use boilerplate scripts in `/data` for analysis, and set up an epaper device to display quotes (best used with cron, see `/rpi/display_quotes.py` for more information.
+From here you can use boilerplate scripts in `/data` for analysis, and set up an epaper device to display quotes (best used with cron), see `/rpi/display_quotes.py` for more information.
 
 ![epaper display](https://i.redd.it/2vr77kwwlt811.jpg "epaper display")
 

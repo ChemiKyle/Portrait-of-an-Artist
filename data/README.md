@@ -11,8 +11,12 @@ The file will be located in `/media/$USER/Kindle/system/userannotlogsDir/` and t
 It's not(?) accessible on Windows and seems to be a transient storage for Amazon's anlytics purposes. 
 On my machine it's stamped with about the last time I connected it to the internet. 
 If you keep your kindle connected to wifi, I suggest regularly pulling this file out to use for a better analysis.
+Possibly of interest to pair with these data is the `calibre.metadata` file if you are a [Calibre](https://calibre-ebook.com/) user. 
+Particularly for pairing `asin` with authors.
 
 The file is in a quasi-`.jsonl` format and will need some working up. I used a regex in vim to ready the file for import into `R`; it's provided below for easy use.
 ```vim
 :%s/^\(-?.*\)={\(.+}$\)/{"id":"\1",\2
 ```
+A perl script is now also provided to perform the same regex and output a file title `parsed\_annotation.jsonl`. It takes your annotation file as an input on the command line.
+
