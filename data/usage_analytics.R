@@ -37,14 +37,13 @@ difftime(max(df$modificationDate), min(df$modificationDate), units="hours")
 df$modificationDate <- df$modificationDate - t_delta
 
 # scrape in character counts, combine with df
-ccdf <- read.table('character_counts.tsv', sep = '\t', header=T)
+ccdf <- read.table('kindle_counts.tsv', sep = '\t', header=T)
 
 df %<>%
     merge(ccdf %>% mutate(title = substr(title, 1, 31)),
           by = "title",
           all.x=T) %>%
-    mutate(bookProgress = position.pos/book_length)
-
+    mutate(bookProgress = position.pos/book_count)
 
 # Optional manipulation pipeline to add significant date ranges
 df %<>% mutate(sig_date = dplyr::case_when(
@@ -123,7 +122,7 @@ df %>%
 p <- df %>%
   filter(!grepl("CR!", title)) %>% # get rid of non-book entires
   ggplot() +
-  geom_point(aes(x = position.pos/book_length, y = modificationDate, color = title)) +
+  geom_point(aes(x = position.pos, y = modificationDate, color = title)) +
   theme_solarized_2() +
   theme(legend.position = "bottom") +
   labs(title = "Book Progress Over Time", x = "Characters Read", y = "Date")
@@ -145,18 +144,18 @@ df %>%
 # Non-converted interactive version of above plot where I also play with sinceStart
 df %>%
   filter(!grepl("CR!", title)) %>% # get rid of non-book entires
-    plot_ly(x = ~position.pos, y = ~modificationDate, color = ~title,
+    plot_ly(x = ~bookProgress, y = ~modificationDate, color = ~title,
             type="scatter",
             hoverinfo="text",
             text = ~paste('Book: ', title,
-                          '<br/>TDelta: ', sinceStart))
+                          '<br/>TDelta: ', bookProgress))
 
 # Help see books I didn't get very far in (x ~= y)
 df %>%
   group_by(title) %>%
   mutate(lastRead = max(modificationDate)) %>%
   ggplot() +
-  geom_point(aes(x = bookStarted, y = lastRead, color = title)) %>% ggplotly()
+  geom_point(aes(x = bookStarted, y = lastRead, color = title))
 
 # Comparisons of authors
 df %>%
